@@ -108,10 +108,12 @@ posDict = {
     "run": [1160, 620],
     "map": [120, 130],
     # Dpad
-    "up": [210, 450],
-    "down": [210, 650],
-    "left": [100, 550],
-    "right": [320, 550],
+    "up": [212, 464],
+    "down": [212, 656],
+    "left": [116, 560],
+    "right": [308, 560],
+    "center": [212, 560],
+    "rad": [96, 24],
     # Tasks
     "leftStart": [265, 550],
     "leftEnd": [265, 400],
@@ -120,4 +122,11 @@ posDict = {
     "taskOffset": [475, -60, 150, 120],
     # Map
     "mapOffset": [50, 60, 130, 130],
+}
+
+navigationEvent = {
+    "device": "/dev/input/event5",
+    "pressSteps": ["3 53 posX", "3 54 posY", "0 2 0", "0 0 0"],
+    "releaseSteps": ["0 2 0", "0 0 0"],
+    "sendEventSize": [32768, 32768],
 }
