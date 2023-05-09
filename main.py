@@ -14,18 +14,19 @@ controls.connectADB()
 task = GameTasks(controls)
 map = MapNavigation(controls, posDict["mapOffset"])
 
-# main
+# from begining to the main screen
 # if (not task.start()):
 #     task.backToMain()
 
-# task
+# task example
 # task.backToMain()
 # task.doTask("taskSub5", "taskSub5c")
 # task.backToMain()
 # task.doTask("taskSub7", "taskSub7a", 1)
 # task.backToMain()
 
-map.setBigMap(dict["map01"])
+# map example
+map.setBigMap(dict["map21"])
 map.getInitPos()
 while (1):
-    map.update()
+    map.update(debugMode=True)

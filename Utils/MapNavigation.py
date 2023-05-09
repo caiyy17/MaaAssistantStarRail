@@ -47,17 +47,19 @@ class MapNavigation:
         self.current = self.getMap()
         self.analyzeFull()
 
-    def update(self):
+    def update(self, debugMode=False):
         self.current = self.getMap()
         self.index += 1
         if not (self.analyze()):
-            self.debug = self.source.copy()
+            if debugMode:
+                self.debug = self.source.copy()
             self.analyzeFull()
-        cv2.circle(self.debug,
-                   (int(self.offset[0] + self.current.shape[1] / 2),
-                    int(self.offset[1] + self.current.shape[0] / 2)), 4,
-                   (0, 0, 255), -1)
-        cv2.imwrite(f"Screen/debug.jpg", self.debug)
+        if debugMode:
+            cv2.circle(self.debug,
+                       (int(self.offset[0] + self.current.shape[1] / 2),
+                        int(self.offset[1] + self.current.shape[0] / 2)), 4,
+                       (0, 0, 255), -1)
+            cv2.imwrite(f"Screen/debug.jpg", self.debug)
 
     def analyze(self, threshold=50):
         img1 = self.current  # queryImage

@@ -2,8 +2,13 @@
 
 This is a small toy python repo inspired by the idea of MaaAssistantArknights. But the code is completely irrelevant to the original Maa project.
 
-# Partial functions
+Examples can be found in the main.py
 
-Now the code support auto battle and map location finding.
+# Auto tasks
 
-Plan to add path finding to the map.
+use GameTasks.doTask(f"taskSub{tabIndex}", f"taskSub{taskIndex}", num) to automatically do tasks.
+Currently taskTab2-6 is supported.
+
+# Map location finding
+
+Use MapNavigation.update() to get the real-time location of the tiny map. In debugMode, the location will be illustrated in the Screen/debug.jpg.
