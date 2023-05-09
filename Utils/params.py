@@ -73,6 +73,7 @@ dict = {
     "select": "Templates/Rougelike/Select_0,0,0,0.png",
     # map
     "map01": "Templates/BigMaps/BigMap01.png",
+    "map01test": "Templates/BigMaps/BigMap01test.png",
     "map02": "Templates/BigMaps/BigMap02.png",
     "map03": "Templates/BigMaps/BigMap03.png",
     "map04": "Templates/BigMaps/BigMap04.png",

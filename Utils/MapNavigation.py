@@ -7,8 +7,9 @@ std_width: int = 1280
 std_height: int = 720
 search_width: int = 130
 search_height: int = 130
-SMALL = 1.035
-LARGE = 1.265
+SMALL = 1
+LARGE = 1.3
+STEPS = 10
 
 
 class MapNavigation:
@@ -17,8 +18,6 @@ class MapNavigation:
         self.controls = controls
         self.screen = controls.screen
         self.controls.getScreen()
-        # self.previous = self.getMap()
-        # self.current = self.getMap()
 
     def setBigMap(self, bigMap):
         map = cv2.imread(bigMap)
@@ -46,28 +45,17 @@ class MapNavigation:
 
     def getInitPos(self):
         self.current = self.getMap()
-        currentOffset, value = patchMatch(self.current, SMALL, self.bigMap)
-        res = cv2.warpAffine(
-            self.current,
-            np.float32([[1, 0, currentOffset[0]], [0, 1, currentOffset[1]]]),
-            (self.bigMap.shape[1], self.bigMap.shape[0]))
-        size = self.current.shape
-        cv2.imwrite(f"Screen/align0.jpg", self.bigMap - res + 128)
-        self.offset = [currentOffset[0], currentOffset[1]]
-        print(self.offset, value)
+        self.analyzeFull()
 
     def update(self):
-        # self.previous = self.current
         self.current = self.getMap()
         self.index += 1
-        # cv2.imwrite("Screen/previous.jpg", self.previous)
-        # cv2.imwrite("Screen/current.jpg", self.current)
         if not (self.analyze()):
             self.debug = self.source.copy()
             self.analyzeFull()
         cv2.circle(self.debug,
                    (int(self.offset[0] + self.current.shape[1] / 2),
-                    int(self.offset[1] + self.current.shape[0] / 2)), 5,
+                    int(self.offset[1] + self.current.shape[0] / 2)), 4,
                    (0, 0, 255), -1)
         cv2.imwrite(f"Screen/debug.jpg", self.debug)
 
@@ -83,7 +71,7 @@ class MapNavigation:
             np.float32([[1, 0, mapOffset[0]], [0, 1, mapOffset[1]]]),
             (search_width, search_height))
         currentOffset, valueMax, currentScale = patchMatchScale(
-            img1, SMALL, LARGE, 20, searchMap, mode="relative")
+            img1, SMALL, LARGE, STEPS, searchMap)
         if (abs(currentOffset[0]) > threshold
                 or abs(currentOffset[1]) > threshold):
             return False
@@ -101,14 +89,15 @@ class MapNavigation:
         #                                                  self.offset[1]]]),
         #     (self.bigMap.shape[1], self.bigMap.shape[0]))
         # cv2.imwrite(f"Screen/align{self.index}.jpg", self.bigMap - res + 128)
-        print(valueMax, currentScale, self.offset)
+        # print(valueMax, currentScale, self.offset)
         return True
 
     def analyzeFull(self):
         img1 = self.current  # queryImage
         size = img1.shape
         currentOffset, valueMax, currentScale = patchMatchScale(
-            img1, SMALL, LARGE, 20, self.bigMap)
+            img1, SMALL, LARGE, STEPS, self.bigMap)
+        self.offset = currentOffset
         # shift = [(1 - currentScale) * size[1] / 2,
         #          (1 - currentScale) * size[0] / 2]
         # final = cv2.warpAffine(
@@ -117,8 +106,7 @@ class MapNavigation:
         #                 [0, currentScale, shift[1]]]), (size[1], size[0]))
         # res = cv2.warpAffine(
         #     final,
-        #     np.float32([[1, 0, currentOffset[0]], [0, 1, currentOffset[1]]]),
+        #     np.float32([[1, 0, self.offset[0]], [0, 1, self.offset[1]]]),
         #     (self.bigMap.shape[1], self.bigMap.shape[0]))
         # cv2.imwrite(f"Screen/align{self.index}.jpg", self.bigMap - res + 128)
-        self.offset = currentOffset
         # print(valueMax, currentScale, self.offset)
