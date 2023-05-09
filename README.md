@@ -6,4 +6,4 @@ This is a small toy python repo inspired by the idea of MaaAssistantArknights. B
 
 Now the code support auto battle and map location finding.
 
-To be updated
+Plan to add path finding to the map.
