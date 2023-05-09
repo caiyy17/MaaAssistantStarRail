@@ -19,13 +19,13 @@ map = MapNavigation(controls, posDict["mapOffset"])
 #     task.backToMain()
 
 # task
-# task.backToMain()
-# task.doTask("taskSub5", "taskSub5c", 2)
-# task.backToMain()
+task.backToMain()
+task.doTask("taskSub5", "taskSub5c")
+task.backToMain()
 # task.doTask("taskSub7", "taskSub7a", 1)
 # task.backToMain()
 
-map.setBigMap(dict["map23"])
-map.getInitPos()
-while (1):
-    map.update()
+# map.setBigMap(dict["map01"])
+# map.getInitPos()
+# while (1):
+#     map.update()

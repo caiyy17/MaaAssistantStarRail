@@ -71,7 +71,7 @@ class MapNavigation:
                    (0, 0, 255), -1)
         cv2.imwrite(f"Screen/debug.jpg", self.debug)
 
-    def analyze(self, threshold=20):
+    def analyze(self, threshold=50):
         img1 = self.current  # queryImage
         size = img1.shape
         mapOffset = [
@@ -101,7 +101,7 @@ class MapNavigation:
         #                                                  self.offset[1]]]),
         #     (self.bigMap.shape[1], self.bigMap.shape[0]))
         # cv2.imwrite(f"Screen/align{self.index}.jpg", self.bigMap - res + 128)
-        # print(valueMax, currentScale, self.offset)
+        print(valueMax, currentScale, self.offset)
         return True
 
     def analyzeFull(self):
