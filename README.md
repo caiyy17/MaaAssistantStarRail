@@ -6,8 +6,7 @@ Examples can be found in the main.py. Please set your own ADB address. Note that
 
 # Auto tasks
 
-use GameTasks.doTask(f"taskSub{tabIndex}", f"taskSub{taskIndex}", num) to automatically do tasks.
-Currently taskTab2-6 is supported.
+Use the "Task" tab to automatically do tasks. Currently taskTab2-6 is supported.
 
 # Map location finding
 
