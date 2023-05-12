@@ -25,10 +25,9 @@ class Controls:
         self.pressSteps = pressSteps
         self.releaseSteps = releaseSteps
         self.sendEventSize = sendEventSize
-        self.angle = 90
 
-    async def runCommand(self, command):
-        subprocess.run(command, capture_output=True, shell=True)
+    # async def runCommand(self, command):
+    #     subprocess.run(command, capture_output=True, shell=True)
 
     def connectADB(self):
         # asyncio.create_task(
@@ -91,19 +90,11 @@ class Controls:
             step = step.replace("posY", f"{int(posY)}")
             self.sendEvent(self.device, step)
 
-    def pressAngle(self, center, radius, angle=None):
-        if angle is None:
-            angle = self.angle
-        else:
-            self.angle = angle
+    def pressAngle(self, center, radius, angle):
         rad = math.radians(angle)
         posX = center[0] + radius * math.cos(rad)
-        posY = center[1] - radius * math.sin(rad)
+        posY = center[1] + radius * math.sin(rad)
         self.pressPos([posX, posY])
-
-    def pressDeltaAngle(self, center, radius, deltaAngle):
-        self.angle += deltaAngle
-        self.pressAngle(center, radius)
 
     def release(self):
         for step in self.releaseSteps:

@@ -11,7 +11,7 @@ ADB = "\"C:\Program Files\BlueStacks_nxt\.\HD-Adb.exe\""
 SCREEN = "Screen/screen.png"
 
 
-async def main():
+def main():
     controls = Controls(ADB,
                         ADBADRESS,
                         SCREEN,
@@ -21,7 +21,7 @@ async def main():
                         sendEventSize=navigationEvent["sendEventSize"])
     controls.connectADB()
     task = GameTasks(controls)
-    map = MapNavigation(controls, posDict["mapOffset"])
+    map = MapNavigation(controls, posDict["mapOffset"], debugMode=True)
 
     # from begining to the main screen
     # if (not task.start()):
@@ -38,15 +38,19 @@ async def main():
     ts = time.time()
     map.setBigMap(dict["map21"])
     map.getInitPos()
-    controls.pressAngle(posDict["center"], posDict["rad"][0])
+    route = [(255, 457), (253, 423), (254, 378), (260, 347), (264, 311),
+             (264, 275), (268, 254), (300, 249), (337, 250), (369, 251),
+             (374, 277), (375, 313), (376, 350), (377, 396), (378, 427),
+             (373, 440), (347, 443), (314, 442), (288, 442), (269, 442),
+             (261, 455)]
+    map.setRoute(route, posDict["center"], posDict["rad"])
     while (1):
         te = time.time()
         print(te - ts)
         ts = te
-        map.update(debugMode=True)
-        # map.update()
-        controls.pressDeltaAngle(posDict["center"], posDict["rad"][0], 10)
-    controls.release()
+        map.update()
+        if (map.goRoute()):
+            break
 
 
-asyncio.run(main())
+main()
