@@ -29,7 +29,7 @@ def findOnScreen(target, screen, threshold=0.8, roi=(-1, -1, -1, -1)):
     ewsult = cv2.matchTemplate(screen_img, target_img, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(ewsult)
     # print(max_loc)
-    print(max_val)
+    # print(max_val)
     if max_val < threshold:
         return -1, -1
     x = int(left + max_loc[0] + target_img.shape[1] / 2)

@@ -33,34 +33,16 @@ def doTask(TaskName, TaskIndex):
     task.backToMain()
 
 
-def navigate():
-    ts = time.time()
-    map.setBigMap(dict["map21"])
+def navigate(bigMap, route):
+    # ts = time.time()
+    map.setBigMap(dict[bigMap])
     map.getInitPos()
-    # route = [(255, 457), (253, 423), (254, 378), (260, 347), (264, 311),
-    #          (264, 275), (268, 254), (300, 249), (337, 250), (369, 251),
-    #          (374, 277), (375, 313), (376, 350), (377, 396), (378, 427),
-    #          (373, 440), (347, 443), (314, 442), (288, 442), (269, 442),
-    #          (261, 455)]
-    route = [(253, 486), (256, 451), (262, 446), (287, 444), (331, 445),
-             (374, 445), (384, 450), (388, 458), (390, 476), (393, 495),
-             (400, 500), (410, 503), (427, 520), (445, 528), (454, 529),
-             (455, 524), (455, 519), (455, 514), (456, 509), (461, 510),
-             (474, 509), (489, 507), (488, 497), (489, 484), (491, 476),
-             (493, 470), (499, 469), (509, 470), (519, 469), (523, 472),
-             (522, 479), (525, 486), (529, 487), (535, 488), (544, 488),
-             (550, 486), (553, 484), (553, 482), (555, 478), (560, 475),
-             (560, 471), (560, 468), (560, 465), (562, 465), (565, 464),
-             (566, 461), (565, 458), (566, 455), (566, 452), (569, 450),
-             (571, 447), (573, 444), (574, 441), (573, 438), (572, 434),
-             (570, 432), (572, 428), (570, 424), (570, 419), (570, 414),
-             (571, 408), (573, 406), (578, 404), (589, 402), (606, 403),
-             (626, 401), (641, 395)]
-    map.setRoute(route, posDict["center"], posDict["rad"])
+    map.setRoute(route, posDict["center"],
+                 [posDict["rad"][0], posDict["rad"][1]])
     while (1):
-        te = time.time()
-        print(te - ts)
-        ts = te
+        # te = time.time()
+        # print(te - ts)
+        # ts = te
         map.update()
         if (map.goRoute()):
             break
@@ -83,18 +65,6 @@ def exitProcess():
     controls.release()
     controls.release()
     task.backToMain()
-
-
-def tryStart():
-    tryFunc(start)
-
-
-def tryDoTask(TaskName, TaskIndex):
-    tryFunc(doTask, TaskName, TaskIndex)
-
-
-def tryNavigate():
-    tryFunc(navigate)
 
 
 # gui part using tkinter
@@ -123,7 +93,7 @@ def gui():
 
     # tab1 main
     # start button
-    startButton = tk.Button(tab1, text="Start", command=tryStart)
+    startButton = tk.Button(tab1, text="Start", command=lambda: tryFunc(start))
     startButton.place(x=100, y=50, width=100, height=50)
     # exit button
     exitButton = tk.Button(tab1, text="Terminate", command=exitProcess)
@@ -151,7 +121,7 @@ def gui():
         doTaskButton = tk.Button(
             tab2,
             text="DoTask",
-            command=lambda: tryDoTask(TaskName, TaskIndex))
+            command=lambda: tryFunc(doTask, TaskName, TaskIndex))
         doTaskButton.place(x=300, y=150, width=100, height=50)
         print(TaskName, TaskIndex)
 
@@ -162,15 +132,52 @@ def gui():
     setTaskNameButton.place(x=100, y=150, width=100, height=50)
 
     # doTask button
-    doTaskButton = tk.Button(tab2,
-                             text="DoTask",
-                             command=lambda: tryDoTask(TaskName, TaskIndex))
+    doTaskButton = tk.Button(
+        tab2,
+        text="DoTask",
+        command=lambda: tryFunc(doTask, TaskName, TaskIndex))
     doTaskButton.place(x=300, y=150, width=100, height=50)
 
     # tab3 map
+    # add a place to input the map name
+    mapName = tk.StringVar()
+    mapName.set("map21")
+    mapNameEntry = tk.Entry(tab3, textvariable=mapName)
+    mapNameEntry.place(x=100, y=50, width=100, height=50)
+    # add a place to input the route
+    routeName = tk.StringVar()
+    routeName.set("route1")
+    routeEntry = tk.Entry(tab3, textvariable=routeName)
+    routeEntry.place(x=300, y=50, width=100, height=50)
+    # get the map name and route
+    MapName = mapName.get()
+    RouteName = routeName.get()
+    route = dictRoute[RouteName]
+
+    # set mapName
+    def setMapAndRoute():
+        MapName = mapName.get()
+        RouteName = routeName.get()
+        route = dictRoute[RouteName]
+        navigateButton = tk.Button(
+            tab3,
+            text="Navigate",
+            command=lambda: tryFunc(navigate, MapName, route))
+        navigateButton.place(x=300, y=150, width=100, height=50)
+        print(MapName, RouteName)
+
+    # setMapName button
+    setMapNameButton = tk.Button(tab3,
+                                 text="SetMapAndRoute",
+                                 command=setMapAndRoute)
+    setMapNameButton.place(x=100, y=150, width=100, height=50)
+
     # navigate button
-    navigateButton = tk.Button(tab3, text="Navigate", command=tryNavigate)
-    navigateButton.place(x=100, y=50, width=100, height=50)
+    navigateButton = tk.Button(
+        tab3,
+        text="Navigate",
+        command=lambda: tryFunc(navigate, MapName, route))
+    navigateButton.place(x=300, y=150, width=100, height=50)
 
     window.mainloop()
 

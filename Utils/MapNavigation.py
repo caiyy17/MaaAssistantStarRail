@@ -14,7 +14,7 @@ STEPS = 10
 
 THRESHDIR = 0.9
 THRESHUPDATE = 10
-THRESHRUN = 50
+THRESHRUN = 100
 
 
 class MapNavigation:
