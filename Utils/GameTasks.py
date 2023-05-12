@@ -7,16 +7,6 @@ class GameTasks:
     def __init__(self, controls):
         self.controls = controls
 
-    def start(self):
-        if (not self.controls.find(dict["task"])
-                and not self.controls.quikFind(dict["back"])
-                and not self.controls.quikFind(dict["back2"])):
-            print("Start the game")
-            self.controls.waitAndFindAndTap(dict["start"])
-            self.controls.waitAndFind(dict["task"])
-            return True
-        return False
-
     def backToMain(self):
         print("Back to main")
         while 1:
@@ -28,8 +18,22 @@ class GameTasks:
                 break
         self.controls.waitAndFind(dict["task"])
 
+    def start(self):
+        if (not self.controls.find(dict["task"])
+                and not self.controls.quikFind(dict["back"])
+                and not self.controls.quikFind(dict["back2"])):
+            print("Start the game")
+            self.controls.waitAndFindAndTap(dict["start"])
+            self.controls.waitAndFind(dict["task"])
+            print("Game started")
+            return True
+        else:
+            self.backToMain()
+            print("Game already started")
+            return False
+
     def doTask(self, catergory, index, repeat=100):
-        print(f"Do task3 {catergory} {index}")
+        print(f"Do task {catergory} {index}")
         # Tepeport to the task location
         self.controls.tap(dict["task"])
         self.controls.findAndTap(dict["taskTab3"])
@@ -81,9 +85,11 @@ class GameTasks:
             self.controls.waitAndFindAndTap(dict["battleExit"], 100, 5)
         elif catergory == "taskSub1":
             print("Not implemented")
-            self.controls.waitAndFind(dict["back2"])
+            if (not self.controls.find(dict["task"])):
+                self.controls.waitAndFind(dict["back2"])
         elif catergory == "taskSub7":
             print("Not implemented")
-            self.controls.waitAndFind(dict["back"])
+            if (not self.controls.find(dict["task"])):
+                self.controls.waitAndFind(dict["back"])
         else:
             print("Task not found")
