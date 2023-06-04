@@ -6,7 +6,6 @@ refPt = []
 cropping = False
 
 src = "./Screen"
-dst = "./Templates"
 
 
 # 点击并裁剪ROI区域
@@ -22,8 +21,8 @@ def click_and_crop(event, x, y, flags, param):
 print(
     "Usage:\n"
     "Put the 16:9 images under ./src, and run this script, it will be auto converted to 720p.\n"
-    "Drag mouse to select ROI, press 'S' to save, press 'Q' to quit.\n"
-    "The cropped images will be saved in ./dst\n")
+    "Drag mouse to point ROI, press 'S' to skip to the next image, press 'Q' to quit.\n"
+)
 
 std_width: int = 1280
 std_height: int = 720

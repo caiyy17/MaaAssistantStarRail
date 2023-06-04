@@ -3,9 +3,9 @@ import cv2
 from matplotlib import pyplot as plt
 import os
 
-src = "./MakeMap/input"
-dst = "./MakeMap/output"
-mapName = "111"
+src = "./tools/MakeMap/input"
+dst = "./tools/MakeMap/output"
+mapName = "test"
 
 mapRes = 2000
 mapSize = (mapRes, mapRes)
@@ -15,21 +15,26 @@ roi = (140, 150, 600, 400)
 
 def makeMap():
     fileList = os.listdir(src)
-    base = cv2.imread(src + "/" + fileList[0])
-    # base = base[roi[1]:roi[1] + roi[3], roi[0]:roi[0] + roi[2]]
-    baseEdge = cv2.Canny(base, 100, 200)
-    base = cv2.warpAffine(
-        base, np.float32([[1, 0, mapOffset[0]], [0, 1, mapOffset[1]]]),
-        mapSize, cv2.INTER_CUBIC)
-    baseEdge = cv2.warpAffine(
-        baseEdge, np.float32([[1, 0, mapOffset[0]], [0, 1, mapOffset[1]]]),
-        mapSize, cv2.INTER_CUBIC).astype(np.float64)
-    # cv2.imwrite(dst + "/base.png", base)
-    # cv2.imwrite(dst + "/edge.png", baseEdge)
-    for filename in fileList[1:]:
+    fileList.sort()
+    base = None
+    for filename in fileList:
         if not filename.endswith(".png"):
             continue
         print("src:", filename)
+        if base is None:
+            base = cv2.imread(src + "/" + filename)
+            # base = base[roi[1]:roi[1] + roi[3], roi[0]:roi[0] + roi[2]]
+            baseEdge = cv2.Canny(base, 100, 200)
+            base = cv2.warpAffine(
+                base, np.float32([[1, 0, mapOffset[0]], [0, 1, mapOffset[1]]]),
+                mapSize, cv2.INTER_CUBIC)
+            baseEdge = cv2.warpAffine(
+                baseEdge,
+                np.float32([[1, 0, mapOffset[0]], [0, 1, mapOffset[1]]]),
+                mapSize, cv2.INTER_CUBIC).astype(np.float64)
+            # cv2.imwrite(dst + "/base.png", base)
+            # cv2.imwrite(dst + "/edge.png", baseEdge)
+            continue
         image = cv2.imread(src + "/" + filename)
         # image = image[roi[1]:roi[1] + roi[3], roi[0]:roi[0] + roi[2]]
         imageEdge = cv2.Canny(image, 100, 200)

@@ -5,10 +5,12 @@ from Utils.GameTasks import GameTasks
 from Utils.MapNavigation import MapNavigation
 from Utils.params import *
 import multiprocessing
+import json
 
 ADBADRESS = "127.0.0.1:5555"
 ADB = "\"C:\Program Files\BlueStacks_nxt\.\HD-Adb.exe\""
 SCREEN = "Screen/screen.png"
+TEMPLATE = json.load(open("./resource/template.json", "r"))
 
 
 class MaaAssistant():
@@ -25,7 +27,7 @@ class MaaAssistant():
             releaseSteps=navigationEvent["releaseSteps"],
             sendEventSize=navigationEvent["sendEventSize"])
         self.controls.connectADB()
-        self.task = GameTasks(self.controls)
+        self.task = GameTasks(self.controls, TEMPLATE)
         self.map = MapNavigation(self.controls,
                                  posDict["mapOffset"],
                                  debugMode=True)
@@ -40,7 +42,7 @@ class MaaAssistant():
 
     def navigate(self, bigMap, route):
         # ts = time.time()
-        self.map.setBigMap(dict[bigMap])
+        self.map.setBigMap(TEMPLATE[bigMap])
         self.map.getInitPos()
         self.map.setRoute(route, posDict["center"],
                           [posDict["rad"][0], posDict["rad"][1]])
@@ -53,7 +55,7 @@ class MaaAssistant():
                 break
 
     def findLocation(self, bigMap, route):
-        self.map.setBigMap(dict[bigMap])
+        self.map.setBigMap(TEMPLATE[bigMap])
         self.map.getInitPos()
         self.map.setRoute(route, posDict["center"],
                           [posDict["rad"][0], posDict["rad"][1]])
@@ -63,6 +65,14 @@ class MaaAssistant():
     def tryFunc(self, func, *args):
         try:
             self.exitProcess()
+            process = multiprocessing.Process(target=func, args=args)
+            process.daemon = True
+            process.start()
+        except Exception as e:
+            print(e)
+
+    def tryFunc1(self, func, *args):
+        try:
             process = multiprocessing.Process(target=func, args=args)
             process.daemon = True
             process.start()
@@ -140,7 +150,7 @@ class MaaGui():
         startButton = tk.Button(
             tab1,
             text="Start",
-            command=lambda: self.assistant.tryFunc(self.assistant.start))
+            command=lambda: self.assistant.tryFunc1(self.assistant.start))
         startButton.place(x=100, y=50, width=100, height=50)
         # exit button
         exitButton = tk.Button(tab1,

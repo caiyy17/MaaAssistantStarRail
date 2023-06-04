@@ -9,8 +9,8 @@ import os
 refPt = []
 cropping = False
 
-src = "./MakeMap/screen"
-dst = "./MakeMap/input"
+src = "./Screen"
+dst = "./resource/Templates"
 
 
 # 点击并裁剪ROI区域
@@ -40,7 +40,7 @@ def click_and_crop(event, x, y, flags, param):
 print(
     "Usage:\n"
     "Put the 16:9 images under ./src, and run this script, it will be auto converted to 720p.\n"
-    "Drag mouse to select ROI, press 'S' to save, press 'Q' to quit.\n"
+    "Drag mouse to select ROI, press 'S' to save or skip (without selection), press 'Q' to quit.\n"
     "The cropped images will be saved in ./dst\n")
 
 std_width: int = 1280
@@ -49,13 +49,6 @@ std_ratio = std_width / std_height
 
 cv2.namedWindow("image")
 cv2.setMouseCallback("image", click_and_crop)
-
-for filename in os.listdir(dst):
-    if not filename.endswith(".png"):
-        continue
-    else:
-        # delete old files
-        os.remove(dst + "/" + filename)
 
 for filename in os.listdir(src):
     if not filename.endswith(".png"):

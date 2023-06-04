@@ -9,8 +9,8 @@ import os
 refPt = []
 cropping = False
 
-src = "./Screen"
-dst = "./Templates"
+src = "./tools/MakeMap/screen"
+dst = "./tools/MakeMap/input"
 
 
 # 点击并裁剪ROI区域
@@ -49,6 +49,13 @@ std_ratio = std_width / std_height
 
 cv2.namedWindow("image")
 cv2.setMouseCallback("image", click_and_crop)
+
+for filename in os.listdir(dst):
+    if not filename.endswith(".png"):
+        continue
+    else:
+        # delete old files
+        os.remove(dst + "/" + filename)
 
 for filename in os.listdir(src):
     if not filename.endswith(".png"):

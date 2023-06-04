@@ -4,7 +4,6 @@ import os
 # 初始化参考点列表和布尔值标志：是否正在执行裁剪
 refPt = []
 src = "./Screen/bigMap.png"
-dst = "./Templates"
 
 
 def getPoint(event, x, y, flags, param):

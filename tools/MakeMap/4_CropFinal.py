@@ -2,8 +2,8 @@ import cv2
 import os
 import numpy as np
 
-src = "./MakeMap/output"
-dst = "./MakeMap/final"
+src = "./tools/MakeMap/output"
+dst = "./tools/MakeMap/final"
 
 for filename in os.listdir(src):
     if not filename.endswith(".png"):

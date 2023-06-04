@@ -5,7 +5,7 @@ std_width: int = 1280
 std_height: int = 720
 
 
-def findOnScreen(target, screen, threshold=0.8, roi=(-1, -1, -1, -1)):
+def findOnScreen(target, screen, threshold=0.7, roi=(-1, -1, -1, -1)):
     screen_img = cv2.imread(screen)
     target_img = cv2.imread(target)
 
